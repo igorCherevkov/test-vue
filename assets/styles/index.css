@@ -1,0 +1,26 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-button {
+  padding: 10px 12px;
+  background-color: #629ee4;
+  font-size: 16px;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.table-button:hover {
+  background-color: #357abd;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+}
