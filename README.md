@@ -1,75 +1,20 @@
-# Nuxt Minimal Starter
+# 1. Запуск проекта
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Клонирование
 
-## Setup
-
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+```
+git clone https://github.com/igorCherevkov/test-vue.git
+cd test-vue
 ```
 
-## Development Server
+## Доступ к приложению
 
-Start the development server on `http://localhost:3000`:
+- Frontend (Vue + Nuxt): http://localhost:3000
 
-```bash
-# npm
-npm run dev
+# 2. Ключевые компоненты
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- pages/index.vue - Главная страница с таблицей сотрудников
+- components/EmployeeForm.vue - Компонент для отрисовки таблицы сотрудников
+- components/EmployeeTable.vue - Компонент для отрисовки формы обновить / создать сотрудника
+- data/employees.json - json с тестовыми сотрудниками
+- server - mock запросы на серверы (просто обновляют json файл)

@@ -5,7 +5,7 @@
       :total="data.total"
       :loading="loading"
       v-model:currentPage="currentPage"
-      @edit="openEditorm"
+      @edit="openEditForm"
     />
 
     <div class="button-wrapper">
@@ -14,7 +14,7 @@
       </button>
     </div>
 
-    <CreateEmployeerForm
+    <EmployeeForm
       v-if="showForm"
       :employee="selectedEmployee"
       @save="saveEmployee"
@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import "~/assets/styles/index.css";
-import CreateEmployeerForm from "~/components/EmployeeForm.vue";
+import EmployeeForm from "~/components/EmployeeForm.vue";
 import EmployeeTable from "~/components/EmployeeTable.vue";
 import { ITEMS_PER_PAGE } from "~/constants";
 import type { Employee, EmployeeRequest } from "~/types";
@@ -54,7 +54,7 @@ const openCreateForm = () => {
   showForm.value = true;
 };
 
-const openEditorm = (emp: Employee) => {
+const openEditForm = (emp: Employee) => {
   selectedEmployee.value = { ...emp };
   showForm.value = true;
 };
