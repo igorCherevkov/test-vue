@@ -2,8 +2,11 @@
   padding: 20px 40px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .table-scroll {
@@ -15,9 +18,8 @@ table {
   width: 100%;
   min-width: 750px;
   border-collapse: collapse;
-  border-radius: 8px;
   overflow: hidden;
-  background-color: white;
+  background-color: #ffffff;
 }
 
 caption {
