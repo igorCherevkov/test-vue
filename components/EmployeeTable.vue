@@ -7,6 +7,7 @@
         </caption>
         <thead>
           <tr>
+            <th>№</th>
             <th>Имя</th>
             <th>Фамилия</th>
             <th>Стаж</th>
@@ -16,10 +17,11 @@
         </thead>
         <tbody>
           <tr
-            v-for="employee in employees"
+            v-for="(employee, index) in employees"
             :key="employee.id"
             @click="$emit('edit', employee)"
           >
+            <td class="number-cell">{{ getEmployeeNumber(index) }}</td>
             <td>{{ employee.firstName }}</td>
             <td>{{ employee.lastName }}</td>
             <td>{{ employee.experience }}</td>
@@ -73,6 +75,10 @@ const emit = defineEmits<{
 const totalPages = computed(() => {
   return props.total > 0 ? Math.ceil(props.total / ITEMS_PER_PAGE) : 0;
 });
+
+const getEmployeeNumber = (index: number) => {
+  return (props.currentPage - 1) * ITEMS_PER_PAGE + index + 1;
+};
 
 const nextPage = () => {
   if (props.currentPage < totalPages.value)
