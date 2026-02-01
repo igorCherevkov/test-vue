@@ -6,19 +6,18 @@
           employee ? "Изменить информацию о сотруднике" : "Добавить сотрудника"
         }}
       </h2>
+
+      <div v-if="loading" class="form-loading">
+        <div class="form-spinner"></div>
+      </div>
+
       <div class="form-group">
         <label for="firstName">Имя</label>
         <input
           id="firstName"
           v-model="localEmployee.firstName"
           placeholder="Введите имя"
-          @invalid="
-            (e: Event) =>
-              (e.target as HTMLInputElement).setCustomValidity('Введите имя')
-          "
-          @input="
-            (e: Event) => (e.target as HTMLInputElement).setCustomValidity('')
-          "
+          :disabled="loading"
           required
         />
       </div>
@@ -29,15 +28,7 @@
           id="lastName"
           v-model="localEmployee.lastName"
           placeholder="Введите фамилию"
-          @invalid="
-            (e: Event) =>
-              (e.target as HTMLInputElement).setCustomValidity(
-                'Введите фамилию',
-              )
-          "
-          @input="
-            (e: Event) => (e.target as HTMLInputElement).setCustomValidity('')
-          "
+          :disabled="loading"
           required
         />
       </div>
@@ -49,6 +40,8 @@
           type="number"
           min="0"
           v-model.number="localEmployee.age"
+          :disabled="loading"
+          required
           @input="
             (e: Event) => {
               const target = e.target as HTMLInputElement;
@@ -70,7 +63,6 @@
                 target.setCustomValidity('Некорректный возраст');
             }
           "
-          required
         />
       </div>
 
@@ -82,6 +74,8 @@
           min="0"
           max="100"
           v-model.number="localEmployee.experience"
+          :disabled="loading"
+          required
           @input="
             (e: Event) => {
               const target = e.target as HTMLInputElement;
@@ -102,7 +96,6 @@
                 target.setCustomValidity('Некорректный стаж');
             }
           "
-          required
         />
       </div>
 
@@ -112,20 +105,24 @@
           id="address"
           v-model="localEmployee.address"
           placeholder="Введите адрес"
-          @invalid="
-            (e: Event) =>
-              (e.target as HTMLInputElement).setCustomValidity('Введите адрес')
-          "
-          @input="
-            (e: Event) => (e.target as HTMLInputElement).setCustomValidity('')
-          "
+          :disabled="loading"
           required
         />
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn-save">Сохранить</button>
-        <button type="button" class="btn-cancel" @click="close">Закрыть</button>
+        <button type="submit" class="btn-save" :disabled="loading">
+          <span v-if="loading" class="button-loader"></span>
+          <span v-else>Сохранить</span>
+        </button>
+        <button
+          type="button"
+          class="btn-cancel"
+          @click="close"
+          :disabled="loading"
+        >
+          Закрыть
+        </button>
       </div>
     </form>
   </div>
@@ -139,6 +136,7 @@ import type { Employee } from "~/types";
 
 const props = defineProps<{
   employee: Employee | null;
+  loading?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -179,6 +177,8 @@ const submitForm = () => {
 };
 
 const close = () => {
-  emit("close");
+  if (!props.loading) {
+    emit("close");
+  }
 };
 </script>

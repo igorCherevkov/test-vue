@@ -20,6 +20,7 @@
             v-for="(employee, index) in employees"
             :key="employee.id"
             @click="$emit('edit', employee)"
+            :class="{ 'disabled-row': loading }"
           >
             <td class="number-cell">{{ getEmployeeNumber(index) }}</td>
             <td>{{ employee.firstName }}</td>
@@ -30,24 +31,32 @@
           </tr>
 
           <tr v-if="!employees.length && !loading">
-            <td>Нет данных</td>
+            <td colspan="6" class="empty-message">Нет данных</td>
           </tr>
 
-          <tr v-if="loading">
-            ...загрузка
+          <tr v-if="loading && employees.length">
+            <td colspan="6" class="loading-row">
+              <div class="table-loader"></div>
+              Обновление данных...
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 1 || loading">
+      <button
+        @click="prevPage"
+        :disabled="currentPage === 1 || loading"
+        class="pagination-btn"
+      >
         ←
       </button>
       <span>{{ props.total ? currentPage : 0 }} / {{ totalPages }}</span>
       <button
         @click="nextPage"
         :disabled="currentPage === totalPages || loading"
+        class="pagination-btn"
       >
         →
       </button>

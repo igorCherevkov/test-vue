@@ -1,5 +1,10 @@
 <template>
   <div class="page-container">
+    <div v-if="loading && !data.data.length" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Загрузка данных...</p>
+    </div>
+
     <EmployeeTable
       :employees="data.data"
       :total="data.total"
@@ -9,7 +14,7 @@
     />
 
     <div class="button-wrapper">
-      <button class="table-button" @click="openCreateForm">
+      <button class="table-button" @click="openCreateForm" :disabled="loading">
         Добавить сотрудника
       </button>
     </div>
@@ -17,6 +22,7 @@
     <EmployeeForm
       v-if="showForm"
       :employee="selectedEmployee"
+      :loading="formLoading"
       @save="saveEmployee"
       @close="closeForm"
     />
@@ -34,6 +40,7 @@ import type { Employee, EmployeeRequest } from "~/types";
 const selectedEmployee = ref<Employee | null>(null);
 const showForm = ref(false);
 const currentPage = ref(1);
+const formLoading = ref(false);
 
 const {
   data,
@@ -60,24 +67,33 @@ const openEditForm = (emp: Employee) => {
 };
 
 const saveEmployee = async (emp: Employee) => {
-  if (emp.id) {
-    await $fetch(`/api/employees/${emp.id}`, {
-      method: "PUT" as any,
-      body: emp,
-    });
-  } else {
-    await $fetch(`/api/employees`, {
-      method: "POST",
-      body: emp,
-    });
+  formLoading.value = true;
+
+  try {
+    if (emp.id) {
+      await $fetch(`/api/employees/${emp.id}`, {
+        method: "PUT",
+        body: emp,
+      });
+    } else {
+      await $fetch(`/api/employees`, {
+        method: "POST",
+        body: emp,
+      });
+    }
+
+    showForm.value = false;
+    await refresh();
+  } catch (err: any) {
+    console.error("Ошибка сохранения:", err);
+  } finally {
+    formLoading.value = false;
   }
-
-  showForm.value = false;
-
-  await refresh();
 };
 
 const closeForm = () => {
-  showForm.value = false;
+  if (!formLoading.value) {
+    showForm.value = false;
+  }
 };
 </script>

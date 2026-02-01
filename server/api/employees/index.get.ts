@@ -3,23 +3,32 @@ import { resolve } from "path";
 import type { Employee, EmployeeRequest } from "~/types";
 
 export default defineEventHandler(async (event): Promise<EmployeeRequest> => {
-  const query = getQuery(event);
+  try {
+    const query = getQuery(event);
 
-  const page = Number(query.page ?? 1);
-  const limit = Number(query.limit ?? 10);
+    const page = Number(query.page ?? 1);
+    const limit = Number(query.limit ?? 10);
 
-  const filePath = resolve("./data/employees.json");
-  const file = await fs.readFile(filePath, "utf-8");
+    const filePath = resolve("./data/employees.json");
+    const file = await fs.readFile(filePath, "utf-8");
 
-  const employees: Employee[] = JSON.parse(file);
+    const employees: Employee[] = JSON.parse(file);
 
-  const start = (page - 1) * limit;
-  const paginatedEmployees = employees.slice(start, start + limit);
+    const start = (page - 1) * limit;
+    const paginatedEmployees = employees.slice(start, start + limit);
 
-  return {
-    data: paginatedEmployees,
-    total: employees.length,
-    page,
-    limit,
-  };
+    return {
+      data: paginatedEmployees,
+      total: employees.length,
+      page,
+      limit,
+    };
+  } catch (error: any) {
+    console.error("Ошибка при получении сотрудников:", error);
+
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.message || "Внутренняя ошибка сервера",
+    });
+  }
 });
